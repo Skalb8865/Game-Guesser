@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="../res/pokeball_logo.webp" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pokemon Gusser</title>
+  <title>Pokemon Guésser</title>
   <!-- Links -->
   <link rel="preload" href="./css/pokemon.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
@@ -32,30 +32,151 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
     integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
     crossorigin="anonymous"></script>
-  <script type="module">
-    var loadingScreen = document.querySelector(".loadingScreen");
-
-    window.addEventListener('load', function () {
-      loadingScreen.style.display = 'none';
-    })
-  </script>
 
   <script type="module">
     $(document).ready(function () {
+      let allData = [];
+
+      $.getJSON('/gen1_to_3_pokemon_data_with_images_and_details.json', data => {
+        allData = data;
+      });
+
       $('#search').keyup(function () {
         $('#result').html('');
-        var seachField = $('#search').val();
-        var expression = new RegExp(seachField, "i");
-        $.getJSON('/gen1_to_3_pokemon_data_with_images_and_details.json', function (data) {
-          $.each(data, function (key, value) {
-            if (value.name.search(expression) != -1 || value.pokedex_number.search(expression) != -1 || value.generation.search(expression) != -1) {
-              $('#result').append('<li style="transition: 0.2s;" class="list-group-item"><img src="' + value.image + '"  height="40" width="40" class="img-thumbnail"/> ' + value.name + ' | <span class="text-muted">' + value.pokedex_number + '</span> | <span class="text-muted">' + value.generation + '</span></li>');
-            }
-          });
-        })
+        const searchField = $('#search').val().trim();
+        if (!searchField) return;
+
+        const expression = new RegExp(searchField, 'i');
+
+        $.each(allData, (key, value) => {
+          if (
+            value.name.search(expression) !== -1 ||
+            value.pokedex_number.toString().search(expression) !== -1 ||
+            value.generation.toString().search(expression) !== -1
+          ) {
+            $('#result').append(`
+          <li class="list-group-item" style="cursor:pointer" data-id="${value.pokedex_number}">
+            <img src="${value.image}" width="40" height="40" class="img-thumbnail"/>
+            ${value.name} |
+            <span class="text-muted">${value.pokedex_number}</span> |
+            <span class="text-muted">${value.generation}</span>
+          </li>
+        `);
+          }
+        });
+      });
+
+      $.getJSON('/gen1_to_3_pokemon_data_with_images_and_details.json', data => {
+        allData = data;
+
+        const randomPokemon = allData[Math.floor(Math.random() * allData.length)];
+        if (randomPokemon) {
+          $('#details').append(`
+        <div class="pokemon_details">
+          <div class="pokemon_cards">
+            <img src="${randomPokemon.image}" alt="${randomPokemon.name}" class="img-thumbnail mb-3"/>
+          </div>
+          <div class="pokemon_cards"><p>${randomPokemon.name}</p></div>
+          <div class="pokemon_cards"><p>${randomPokemon.generation}</p></div>
+          <div class="pokemon_cards"><p>${randomPokemon.type}</p></div>
+          <div class="pokemon_cards"><p>${randomPokemon.type2 || 'None'}</p></div>
+        </div>
+    `);
+        }
+      });
+
+
+      // add a Pokémon card without touching previously chosen ones
+      $('#result').on('click', '.list-group-item', function () {
+        const pokedexId = $(this).data('id');
+        setTimeout(() => {
+          $('#search').val('');
+          $('#result').empty();
+        }, 100);
+
+        const pokemon = allData.find(p => p.pokedex_number === pokedexId);
+        if (!pokemon) return;
+
+        $('#details').append(`
+      <div class="pokemon_details">
+        <div class="pokemon_cards">
+          <img src="${pokemon.image}" alt="${pokemon.name}" class="img-thumbnail mb-3"/>
+        </div>
+        <div class="pokemon_cards"><p>${pokemon.name}</p></div>
+        <div class="pokemon_cards"><p> ${pokemon.generation}</p></div>
+        <div class="pokemon_cards"><p> ${pokemon.type}</p></div>
+        <div class="pokemon_cards"><p>${pokemon.type2 || 'None'}</p></div>
+      </div>
+    `);
       });
     });
   </script>
+
+
+    <!-- <script type="module">
+    $(document).ready(function () {
+      let allData = [];
+      let secretPokemon = null;
+
+      // 1) Load data and choose the secret Pokémon
+      $.getJSON('/gen1_to_3_pokemon_data_with_images_and_details.json', data => {
+        allData = data;
+        secretPokemon = allData[Math.floor(Math.random() * allData.length)];
+        console.log('Secret Pokémon:', secretPokemon.name);
+      });
+
+      // 2) Live search
+      $('#search').keyup(function () {
+        $('#result').empty();
+        const term = $('#search').val().trim();
+        if (!term) return;
+        const regex = new RegExp(term, 'i');
+
+        $.each(allData, (k, p) => {
+          if (
+            p.name.search(regex) !== -1 ||
+            p.pokedex_number.toString().search(regex) !== -1 ||
+            p.generation.toString().search(regex) !== -1
+          ) {
+            $('#result').append(`
+          <li class="list-group-item" data-id="${p.pokedex_number}" style="cursor:pointer">
+            <img src="${p.image}" width="40" height="40" class="img-thumbnail me-2">
+            ${p.name} | <span class="text-muted">${p.pokedex_number}</span> |
+            <span class="text-muted">${p.generation}</span>
+          </li>
+        `);
+          }
+        });
+      });
+
+      // 3) Handle a guess
+      $('#result').on('click', '.list-group-item', function () {
+        const id = $(this).data('id');
+        const guess = allData.find(p => p.pokedex_number === id);
+        if (!guess) return;
+
+        // clear the search bar & dropdown
+        setTimeout(() => { $('#search').val(''); $('#result').empty(); }, 50);
+
+        // helpers
+        const match = (a, b) => (a || 'None') === (b || 'None') ? 'match' : '';
+
+        // build a “row” of tiles
+        $('#details').append(`
+      <div class="pokemon_details">
+        <div class="pokemon_cards ${match(guess.name, secretPokemon.name)}">
+          <img src="${guess.image}" class="img-thumbnail">
+        </div>
+        <div class="pokemon_cards ${match(guess.name, secretPokemon.name)}"><p>${guess.name}</p></div>
+        <div class="pokemon_cards ${match(guess.generation, secretPokemon.generation)}"><p>${guess.generation}</p></div>
+        <div class="pokemon_cards ${match(guess.type, secretPokemon.type)}"><p>${guess.type}</p></div>
+        <div class="pokemon_cards ${match(guess.type2 || 'None', secretPokemon.type2 || 'None')}"><p>${guess.type2 || 'None'}</p></div>
+      </div>
+    `);
+      });
+    });
+  </script> -->
+
 
   <!-- Meta Data -->
   <meta property="description" content="">
@@ -73,10 +194,7 @@
 </head>
 
 <body class="pokemon_gusser">
-  <div class="loadingScreen">
-    <h1>Pokemon Guesser</h1>
-    <span class="loading__anim"></span>
-  </div>
+  <div id="preloader"></div>
   <main class="section">
     <div class="buttons_container">
       <a class="return_button" href="./index.html">← Go Back</a>
@@ -84,10 +202,11 @@
     </div>
     <div class="container" style="width: 900px;">
       <div align="center">
-        <input type="text" name="search" id="search" placeholder="Search Pokemon" class="form-control">
+        <input type="text" name="search" id="search" placeholder="Search Pokémon" class="form-control">
       </div>
       <ul class="list-group" id="result"></ul>
     </div>
+    <div id="details" style="margin-top: 20px;"></div>
   </main>
   <footer>
     <a href="#">

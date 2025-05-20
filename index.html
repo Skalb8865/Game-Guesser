@@ -16,17 +16,9 @@
   <!-- JS -->
   <script type="module" src="/src/main.js"></script>
   <script src="https://kit.fontawesome.com/c4fc73ac8f.js" crossorigin="anonymous"></script>
-  <script type="module">
-    var loadingScreen = document.querySelector(".loadingScreen");
-
-    window.addEventListener('load', function () {
-      loadingScreen.style.display = 'none';
-    })
-  </script>
 
   <!-- Meta Data -->
-  <meta property="description"
-    content="">
+  <meta property="description" content="">
   <meta property="og:type" content="website">
   <meta property="og:title" content="">
   <meta property="og:description" content="">
@@ -41,16 +33,13 @@
 </head>
 
 <body class="homepage">
-  <div class="loadingScreen">
-    <h1>Game Guesser</h1>
-    <span class="loading__anim"></span>
-  </div>
+  <div id="preloader"></div>
   <main class="section">
     <h1>Game Guesser</h1>
     <div class="card_container">
       <div class="card-list">
         <div class="card">
-          <a href="./pokemon_guesser.html">Pokemon Guesser</a>
+          <a href="./pokemon_guesser.html">Pokémon Guesser</a>
         </div>
         <div class="card">2</div>
         <div class="card">3</div>
