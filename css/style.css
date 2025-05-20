@@ -10,7 +10,8 @@
   --clr-pokemon-yellow: #ffcb05;
   --clr-pokemon-blue: #2a75bb;
   --clr-lighter-dark-grey: #1e232b;
-  --clr-main: #ee1515;
+  --clr-wrong: #ee1515;
+  --clr-correct: #4ddd2a;
   --clr-dark-red: #bb1111;
   --text-gradient: linear-gradient(180deg, #ffffff, #adadad);
 
@@ -112,7 +113,6 @@ footer {
   display: grid;
   width: 100%;
   text-align: center;
-  gap: 5px;
 }
 
 footer a {
