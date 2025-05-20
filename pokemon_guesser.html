@@ -37,7 +37,7 @@
     $(document).ready(function () {
       let allData = [];
 
-      $.getJSON('/gen1_to_3_pokemon_data_with_images_and_details.json', data => {
+      $.getJSON('/all_pokemon_full_data.json', data => {
         allData = data;
       });
 
@@ -56,7 +56,7 @@
           ) {
             $('#result').append(`
           <li class="list-group-item" style="cursor:pointer" data-id="${value.pokedex_number}">
-            <img src="${value.image}" width="40" height="40" class="img-thumbnail"/>
+            <img src="${value.image}" width="40" height="40" class="img-thumbnail" loading="lazy"/>
             ${value.name} |
             <span class="text-muted">${value.pokedex_number}</span> |
             <span class="text-muted">${value.generation}</span>
@@ -66,21 +66,25 @@
         });
       });
 
-      $.getJSON('/gen1_to_3_pokemon_data_with_images_and_details.json', data => {
+      $.getJSON('/all_pokemon_full_data.json', data => {
         allData = data;
 
         const randomPokemon = allData[Math.floor(Math.random() * allData.length)];
         if (randomPokemon) {
           $('#details').append(`
+      <div class="container" style="width: 970px;">
+      <div align="center">
         <div class="pokemon_details">
           <div class="pokemon_cards">
-            <img src="${randomPokemon.image}" alt="${randomPokemon.name}"/>
+            <img src="${randomPokemon.image}" alt="${randomPokemon.name}" loading="lazy"/>
           </div>
           <div class="pokemon_cards"><p>${randomPokemon.name}</p></div>
-          <div class="pokemon_cards"><p>${randomPokemon.generation}</p></div>
-          <div class="pokemon_cards"><p>${randomPokemon.type}</p></div>
+          <div class="pokemon_cards"><p> ${randomPokemon.generation}</p></div>
+          <div class="pokemon_cards"><p> ${randomPokemon.type}</p></div>
           <div class="pokemon_cards"><p>${randomPokemon.type2 || 'None'}</p></div>
         </div>
+      </div>
+    </div>
     `);
         }
       });
@@ -98,15 +102,19 @@
         if (!pokemon) return;
 
         $('#details').append(`
-      <div class="pokemon_details">
-        <div class="pokemon_cards">
-          <img src="${pokemon.image}" alt="${pokemon.name}"/>
+    <div class="container" style="width: 970px;">
+      <div align="center">
+        <div class="pokemon_details">
+          <div class="pokemon_cards">
+            <img src="${pokemon.image}" alt="${pokemon.name}" loading="lazy"/>
+          </div>
+          <div class="pokemon_cards"><p>${pokemon.name}</p></div>
+          <div class="pokemon_cards"><p> ${pokemon.generation}</p></div>
+          <div class="pokemon_cards"><p> ${pokemon.type}</p></div>
+          <div class="pokemon_cards"><p>${pokemon.type2 || 'None'}</p></div>
         </div>
-        <div class="pokemon_cards"><p>${pokemon.name}</p></div>
-        <div class="pokemon_cards"><p> ${pokemon.generation}</p></div>
-        <div class="pokemon_cards"><p> ${pokemon.type}</p></div>
-        <div class="pokemon_cards"><p>${pokemon.type2 || 'None'}</p></div>
       </div>
+    </div>
     `);
       });
     });
@@ -119,7 +127,7 @@
       let secretPokemon = null;
 
       // 1) Load data and choose the secret Pokémon
-      $.getJSON('/gen1_to_3_pokemon_data_with_images_and_details.json', data => {
+      $.getJSON('/all_pokemon_full_data.json', data => {
         allData = data;
         secretPokemon = allData[Math.floor(Math.random() * allData.length)];
         console.log('Secret Pokémon:', secretPokemon.name);
@@ -197,9 +205,10 @@
   <div id="preloader"></div>
   <main class="section">
     <div class="buttons_container">
-      <a class="return_button" href="./index.html">← Go Back</a>
+      <a class="return_button" href="./pokemon_guesser-homepage.html">← Go Back</a>
       <a class="refresh_button" href="./pokemon_guesser.html">↺ Restart</a>
     </div>
+    <h1>Pokemon Guesser</h1>
     <div class="container" style="width: 900px;">
       <div align="center">
         <input type="text" name="search" id="search" placeholder="Search Pokémon" class="form-control">
@@ -210,7 +219,7 @@
   </main>
   <footer>
     <a href="https://github.com/Skalb8865/Game-Guesser" target="_blank">
-     <i class="fa-brands fa-github gicon"></i>
+      <i class="fa-brands fa-github gicon"></i>
     </a>
     <p>Made By Sean Kalb</p>
   </footer>

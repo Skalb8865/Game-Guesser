@@ -12,6 +12,7 @@
   <noscript>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
   </noscript>
+  <link rel="stylesheet" href="./css/pokemon.css">
 
   <!-- JS -->
   <script type="module" src="/src/main.js"></script>
@@ -32,20 +33,35 @@
   <meta name="twitter:image" content="">
 </head>
 
-<body class="homepage">
+<body class="pokemon_gusser">
   <div id="preloader"></div>
   <main class="section">
-    <h1>Game Guesser</h1>
+    <h1>Pokémon Guesser</h1>
+    <div class="buttons_container">
+      <a class="return_button" href="./index.html">← Go Back</a>
+    </div>
     <div class="card_container">
-      <div class="card-list">
-        <div class="card pokemon">
-          <a href="./pokemon_guesser-homepage.html">Pokémon Guesser</a>
-        </div>
-        <div class="card">2</div>
-        <div class="card">3</div>
-        <div class="card">4</div>
-        <div class="card">5</div>
-        <div class="card">6</div>
+      <div class="phomepage_cards--wrapper">
+        <a href="./pokemon_guesser.html">
+          <div class="phomepage_card">
+            <div class="phomepage_card--img">
+              <img src="./res/pokeball_logo.webp" alt="">
+            </div>
+            <h2>Pokémon Wordle</h2>
+            <p>Just like wordle but with Pokémon.</p>
+          </div>
+        </a>
+        <a href="#">
+          <div class="phomepage_card">
+            <div class="phomepage_card--img">
+              <img id="wtp"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
+                alt="">
+            </div>
+            <h2>Who's That Pokémon?</h2>
+            <p>Just like the Who's That Pokémon from the Pokémon series.</p>
+          </div>
+        </a>
       </div>
     </div>
   </main>

@@ -8,6 +8,7 @@ export default defineConfig({
         // Main Pages
         main: resolve(__dirname, 'index.html'),
         pokemon_guesser: resolve(__dirname, 'pokemon_guesser.html'),
+        pokemon_guesser_homepage: resolve(__dirname, 'pokemon_guesser-homepage.html'),
       },
     },
   },
