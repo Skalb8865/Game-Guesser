@@ -1,0 +1,56 @@
+.pokemon_gusser {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../res/648132.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.buttons_container {
+    height: 50px;
+}
+
+.return_button {
+    width: 75px;
+    color: var(--clr-light);
+    padding: 5px 15px;
+    border-radius: 10px;
+    background: rgba(105, 105, 105, 0.6);
+    transition: all 0.3s;
+
+}
+
+.return_button:hover {
+    background: rgba(51, 51, 51, 0.6);
+    transition: all 0.3s;
+}
+
+.refresh_button {
+    width: 75px;
+    color: var(--clr-light);
+    padding: 5px 15px;
+    border-radius: 10px;
+    border: none;
+    height: 25px;
+    background: rgba(105, 105, 105, 0.6);
+}
+
+.refresh_button:hover {
+    background: rgba(51, 51, 51, 0.6);
+    transition: all 0.3s;
+}
+
+#result {
+    position: absolute;
+    width: 100%;
+    max-width: 870px;
+    cursor: pointer;
+    overflow-y: auto;
+    max-height: 400px;
+    z-index: 1001;
+}
+
+.list-group-item:hover {
+    background-color: darkgrey;
+    transition: 0.2s;
+}
